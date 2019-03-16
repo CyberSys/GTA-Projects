@@ -84,7 +84,7 @@ public:
     static void SetTrailer(CVehicle *vehicle, unsigned int modelTrailer, unsigned int colour, unsigned int extra) {
         CStreaming::RequestModel(modelTrailer, 0);
         CStreaming::LoadAllRequestedModels(false);
-        if (CStreaming::ms_aInfoForModel[modelTrailer].m_loadState == LOADSTATE_LOADED) {
+        if (CStreaming::ms_aInfoForModel[modelTrailer].m_nLoadState == LOADSTATE_LOADED) {
             if (extra && vehicle) {
                 CVehicleModelInfo::ms_compsToUse[0] = vehicle->m_anExtras[0];
                 CVehicleModelInfo::ms_compsToUse[1] = vehicle->m_anExtras[1];
@@ -153,7 +153,7 @@ public:
                             }
                         }
                     }
-                    MyData *entryModel = GetDataInfoForModel(vehicle->m_wModelIndex);
+                    MyData *entryModel = GetDataInfoForModel(vehicle->m_nModelIndex);
                     ModelInfo &info = modelInfo.Get(vehicle);
                     if (entryModel && info.enabledTrailer) {
                         if (!entryModel->TrailerConst) {
@@ -225,7 +225,7 @@ public:
                         }
                         default: TrailerId = Id; break;
                         }
-                        if (info.enabledTrailer && vehicle->m_pDriver && !vehicle->m_pTrailer
+                        if (info.enabledTrailer && vehicle->m_pDriver && !vehicle->m_pDriver->IsPlayer() && !vehicle->m_pTrailer && vehicle->m_nCreatedBy == eVehicleCreatedBy::RANDOM_VEHICLE
                             && (CModelInfo::IsVehicleModelType(TrailerId) == 11 || CModelInfo::IsVehicleModelType(TrailerId) == 0)) {
                             vehicle->m_nFlags.bMadDriver = 0;
                             vehicle->m_nFlags.bIsLocked = 1;
